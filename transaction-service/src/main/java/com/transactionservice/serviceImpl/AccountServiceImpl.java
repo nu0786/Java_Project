@@ -1,16 +1,16 @@
 package com.transactionservice.serviceImpl;
 
-import com.transactionservice.constants.ExceptionConstant;
+import com.transactionservice.constants.error.ApiErrors;
 import com.transactionservice.dao.Account;
 import com.transactionservice.dto.request.AccountRequestDto;
 import com.transactionservice.dto.response.AccountResponseDto;
-import com.transactionservice.exception.TransactionServiceApiException;
+import com.transactionservice.exception.ApiException;
+import com.transactionservice.exception.ApiExceptionBuilder;
 import com.transactionservice.repository.AccountRepository;
 import com.transactionservice.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service
@@ -21,7 +21,7 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
 
     @Override
-    public boolean createAccount(AccountRequestDto accountRequest) throws TransactionServiceApiException {
+    public boolean createAccount(AccountRequestDto accountRequest) throws ApiException {
 
         try{
 
@@ -31,18 +31,18 @@ public class AccountServiceImpl implements AccountService {
             return true;
         }
         catch(Exception e){
-            throw new TransactionServiceApiException(ExceptionConstant.UNABLE_TO_SAVE_DATA);
+            throw ApiExceptionBuilder.build(ApiErrors.UNABLE_TO_SAVE_DATA);
         }
     }
 
     @Override
-    public AccountResponseDto getAccount(Long accountId) throws TransactionServiceApiException {
+    public AccountResponseDto getAccount(Long accountId) throws ApiException {
 
         Optional<Account> account = accountRepository.findById(accountId);
         if( account.isPresent() ) {
             Account accountDetails = account.get();
             return AccountResponseDto.builder().accountId(accountDetails.getAccountId()).documentNumber(accountDetails.getDocumentNumber()).build();
         }
-        throw new TransactionServiceApiException(ExceptionConstant.ACCOUNT_NOT_FOUND);
+        throw ApiExceptionBuilder.build(ApiErrors.ACCOUNT_NOT_FOUND);
     }
 }

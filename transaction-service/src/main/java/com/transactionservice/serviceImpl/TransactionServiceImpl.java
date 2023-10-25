@@ -1,11 +1,12 @@
 package com.transactionservice.serviceImpl;
 
-import com.transactionservice.constants.ExceptionConstant;
+import com.transactionservice.constants.error.ApiErrors;
 import com.transactionservice.dao.Account;
 import com.transactionservice.dao.OperationType;
 import com.transactionservice.dao.Transaction;
 import com.transactionservice.dto.request.TransactionRequestDto;
-import com.transactionservice.exception.TransactionServiceApiException;
+import com.transactionservice.exception.ApiException;
+import com.transactionservice.exception.ApiExceptionBuilder;
 import com.transactionservice.repository.AccountRepository;
 import com.transactionservice.repository.OperationTypeRepository;
 import com.transactionservice.repository.TransactionRepository;
@@ -30,20 +31,20 @@ public class TransactionServiceImpl implements TransactionService {
     private OperationTypeRepository operationTypeRepository;
 
     @Override
-    public boolean createTransaction(TransactionRequestDto transactionRequestDto) throws TransactionServiceApiException {
+    public boolean createTransaction(TransactionRequestDto transactionRequestDto) throws ApiException {
 
         try{
 
             Optional<Account> account = accountRepository.findById(transactionRequestDto.getAccountId());
 
             if( !account.isPresent() ) {
-                throw new TransactionServiceApiException(ExceptionConstant.ACCOUNT_NOT_FOUND);
+                throw ApiExceptionBuilder.build(ApiErrors.ACCOUNT_NOT_FOUND);
             }
 
             Optional<OperationType> operationType = operationTypeRepository.findById(transactionRequestDto.getOperationTypeId());
 
             if( !operationType.isPresent() ) {
-                throw new TransactionServiceApiException(ExceptionConstant.OPERATION_TYPE_NOT_FOUND);
+                throw ApiExceptionBuilder.build(ApiErrors.OPERATION_TYPE_NOT_FOUND);
             }
 
             Transaction transaction = new Transaction();
@@ -56,7 +57,7 @@ public class TransactionServiceImpl implements TransactionService {
             return true;
         }
         catch(Exception e){
-            throw new TransactionServiceApiException(ExceptionConstant.UNABLE_TO_SAVE_DATA);
+            throw ApiExceptionBuilder.build(ApiErrors.UNABLE_TO_SAVE_DATA);
         }
     }
 }

@@ -1,14 +1,14 @@
 package com.transactionservice.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.transactionservice.exception.TransactionServiceApiException;
+import com.transactionservice.exception.ApiException;
 import lombok.Builder;
 
 @JsonIgnoreProperties("stackTrace")
 public class TransactionServiceResponse {
 
     private Object result;
-    private TransactionServiceApiException exception;
+    private ApiException exception;
     private Paginate pagination;
 
     public TransactionServiceResponse() {
@@ -16,7 +16,7 @@ public class TransactionServiceResponse {
     }
     
     @Builder
-    public TransactionServiceResponse(Object result, TransactionServiceApiException exception, Paginate pagination) {
+    public TransactionServiceResponse(Object result, ApiException exception, Paginate pagination) {
         this.result = result;
         this.exception = exception;
         this.pagination = pagination;
@@ -30,11 +30,11 @@ public class TransactionServiceResponse {
         this.result = result;
     }
 
-    public TransactionServiceApiException getException() {
+    public ApiException getException() {
         return exception;
     }
 
-    public void setException(TransactionServiceApiException exception) {
+    public void setException(ApiException exception) {
         this.exception = exception;
     }
 

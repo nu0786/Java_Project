@@ -2,7 +2,7 @@ package com.transactionservice.controller;
 
 import com.transactionservice.dto.request.TransactionRequestDto;
 import com.transactionservice.dto.response.TransactionServiceResponse;
-import com.transactionservice.exception.TransactionServiceApiException;
+import com.transactionservice.exception.ApiException;
 import com.transactionservice.service.TransactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<TransactionServiceResponse> createTransaction(@Valid @RequestBody TransactionRequestDto transactionRequestDto) throws TransactionServiceApiException {
+    public ResponseEntity<TransactionServiceResponse> createTransaction(@Valid @RequestBody TransactionRequestDto transactionRequestDto) throws ApiException {
         return new ResponseEntity<>(TransactionServiceResponse.builder().result(transactionService.createTransaction(transactionRequestDto)).build(), HttpStatus.CREATED);
     }
 }
