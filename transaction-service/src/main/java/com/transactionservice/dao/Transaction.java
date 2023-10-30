@@ -28,4 +28,6 @@ public class Transaction {
 
     @Column(name="event_date")
     private LocalDateTime eventDate;
+
+    private double balance;
 }

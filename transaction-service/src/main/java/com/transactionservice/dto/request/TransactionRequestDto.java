@@ -20,6 +20,5 @@ public class TransactionRequestDto {
     private Long operationTypeId;
 
     @NotNull(message = ApiErrorCodes.MANDATORY_FIELD_MISSING)
-    @DecimalMin(value = "0.01", message = ApiErrorCodes.INVALID_AMOUNT)
     private Double amount;
 }
